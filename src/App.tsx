@@ -5,18 +5,15 @@ import cn from "classnames";
 
 import toast, { Toaster } from "react-hot-toast";
 
-// import { MoonLoader } from "react-spinners";
-
 import {
   usePrivy,
-  PrivyProvider,
   type CrossAppAccountWithMetadata,
 } from "@privy-io/react-auth";
 
-const createField = (size, countMines) => {
-  const field = new Array(100).fill(0);
+const createField = (size: number, countMines: number) => {
+  const field: number[] = new Array(100).fill(0);
 
-  const calcNear = (x, y) => {
+  const calcNear = (x: number, y: number) => {
     if (x >= 0 && x < size && y >= 0 && y < size) {
       if (field[x * size + y] === -1) return;
       field[x * size + y] += 1;
@@ -24,9 +21,9 @@ const createField = (size, countMines) => {
   };
 
   for (let i = 0; i < countMines; ) {
-    let x = Math.floor(Math.random() * size);
-    let y = Math.floor(Math.random() * size);
-    let posMine = x * size + y;
+    let x: number = Math.floor(Math.random() * size);
+    let y: number = Math.floor(Math.random() * size);
+    let posMine: number = x * size + y;
     if (field[posMine] === -1) continue;
     field[posMine] = -1;
     i++;
@@ -44,15 +41,15 @@ const createField = (size, countMines) => {
 };
 
 function App() {
-  const [score, setScore] = useState(0);
-  const [isGameOver, setIsGameOver] = useState(false);
-  const [isStart, setIStart] = useState(false);
-  const [countMines, setCountMines] = useState(15);
+  const [score, setScore] = useState<number>(0);
+  const [isGameOver, setIsGameOver] = useState<boolean>(false);
+  const [isStart, setIStart] = useState<boolean>(false);
+  const [countMines, setCountMines] = useState<number>(15);
 
-  const size = 10;
-  const [field, setField] = useState([]);
+  const size: number = 10;
+  const [field, setField] = useState<number[]>([]);
 
-  const [mask, setMask] = useState(new Array(100).fill(0));
+  const [mask, setMask] = useState<number[]>(new Array(100).fill(0));
 
   const checkWin = () => {
     const countChecked = mask.filter((value) => value === 1).length;
@@ -75,7 +72,7 @@ function App() {
     setField(createField(size, countMines));
   };
 
-  const clickMine = (x, y) => {
+  const clickMine = (x: number, y: number) => {
     if (!isStart) return;
     if (mask[x * size + y] === 1 || mask[x * size + y] === 2) return;
 
@@ -106,12 +103,13 @@ function App() {
       })
     );
 
-    const clearing = [];
+    const clearing: { x: number; y: number }[] = [];
 
-    const clear = (x, y) => {
+    const clear = (x: number, y: number) => {
       if (x < 0 || x >= size || y < 0 || y >= size) return;
 
       if (mask[x * size + y] === 1) return;
+
       clearing.push({ x: x, y: y });
     };
 
@@ -126,6 +124,11 @@ function App() {
       clear(x - 1, y);
       clear(x, y - 1);
       clear(x, y + 1);
+
+      clear(x + 1, y - 1);
+      clear(x + 1, y + 1);
+      clear(x - 1, y - 1);
+      clear(x - 1, y + 1);
 
       setMask(() =>
         mask.map((value, n) => {
@@ -145,7 +148,7 @@ function App() {
     }
   };
 
-  const flagged = (e: React.MouseEvent<HTMLButtonElement>, x, y) => {
+  const flagged = (e: any, x: number, y: number) => {
     e.preventDefault();
     if (!isStart) return;
     if (isGameOver) return;
@@ -166,9 +169,9 @@ function App() {
   };
 
   const { authenticated, user, ready, logout, login } = usePrivy();
-  const [accountAddress, setAccountAddress] = useState<string | null>();
-  const [username, setUsername] = useState<string | null>();
-  const [message, setMessage] = useState<string | null>(null);
+  const [accountAddress, setAccountAddress] = useState<string | undefined>();
+  const [username, setUsername] = useState<string | undefined>();
+  const [message, setMessage] = useState<string | undefined>("");
 
   // Shorten address for UI
   const shortAddr = (addr?: string) =>
@@ -187,8 +190,8 @@ function App() {
       const result = await response.json();
 
       setUsername(result?.user.username);
-    } catch (error) {
-      console.error(error.message);
+    } catch {
+      console.error("error");
     }
   };
   useEffect(() => {
@@ -219,7 +222,7 @@ function App() {
     <>
       <div className={styles.wrapper}>
         <Toaster
-          position="left-top"
+          position="left"
           containerStyle={{ position: "absolute" }}
           reverseOrder={false}
         />
@@ -247,7 +250,7 @@ function App() {
               <input
                 disabled={isStart}
                 value={countMines}
-                onChange={(e) => setCountMines(e.target.value)}
+                onChange={(e) => setCountMines(Number(e.target.value))}
                 placeholder="count mines"
                 type="number"
               />
@@ -267,9 +270,7 @@ function App() {
                   {[...Array(size)].map((_, x) => {
                     return (
                       <div
-                        onContextMenu={(
-                          e: React.MouseEvent<HTMLButtonElement>
-                        ) => flagged(e, x, y)}
+                        onContextMenu={(e: any) => flagged(e, x, y)}
                         onClick={() => clickMine(x, y)}
                         key={x}
                         className={cn(
