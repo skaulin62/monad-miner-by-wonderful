@@ -41,7 +41,7 @@ const createField = (size: number, countMines: number) => {
 };
 
 function App() {
-  const [score, setScore] = useState<number>(0);
+  // const [score, setScore] = useState<number>(0);
   const [isGameOver, setIsGameOver] = useState<boolean>(false);
   const [isStart, setIStart] = useState<boolean>(false);
   const [countMines, setCountMines] = useState<number>(15);
@@ -55,9 +55,9 @@ function App() {
     const countChecked = mask.filter((value) => value === 1).length;
 
     if (countChecked == size ** 2 - countMines) {
-      setScore(countMines * 10);
+      // setScore(countMines * 10);
       toast.success(
-        "You won!!!!!!!!!!!!!!!!!!! your score: " + score && countMines * 10
+        "You won!!!!!!!!!!!!!!!!!!! your score: " + countMines * 10
       );
       return true;
     }
@@ -177,7 +177,7 @@ function App() {
   const { authenticated, user, ready, logout, login } = usePrivy();
   const [accountAddress, setAccountAddress] = useState<string | undefined>();
   const [username, setUsername] = useState<string | undefined>();
-  const [message, setMessage] = useState<string | undefined>("");
+  // const [message, setMessage] = useState<string | undefined>("");
 
   // Shorten address for UI
   const shortAddr = (addr?: string) =>
@@ -219,7 +219,7 @@ function App() {
           getUsername(crossAppAccount.embeddedWallets[0].address);
         }
       } else {
-        setMessage("You need to link your Monad Games ID account to continue.");
+        // setMessage("You need to link your Monad Games ID account to continue.");
       }
     }
   }, [authenticated, user, ready]);
