@@ -56,6 +56,7 @@ function App() {
 
     if (countChecked == size ** 2 - countMines) {
       setScore(countMines * 10);
+      toast.success("You won!!!!!!!!!!!!!!!!!!! your score: " + score);
       return true;
     }
     return false;
@@ -116,7 +117,9 @@ function App() {
     clear(x, y);
 
     while (clearing.length) {
-      const { x, y } = clearing.pop();
+      const temp: { x: number; y: number } = clearing.pop();
+      const x = temp.x;
+      const y = temp.y;
       mask[x * size + y] = 1;
       if (field[x * size + y] !== 0) continue;
 
@@ -222,7 +225,7 @@ function App() {
     <>
       <div className={styles.wrapper}>
         <Toaster
-          position="left"
+          position="top-left"
           containerStyle={{ position: "absolute" }}
           reverseOrder={false}
         />
