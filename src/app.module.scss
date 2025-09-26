@@ -99,6 +99,16 @@
   opacity: 0.5;
   cursor: no-drop;
 }
+.connectBtn button:disabled {
+  opacity: 0.5;
+  cursor: no-drop;
+}
+.connectBtn button:disabled:hover {
+  background: rgb(109, 83, 253);
+}
+.settings button:disabled:hover {
+  background: rgb(109, 83, 253);
+}
 
 .wrapBoard {
   background-color: #17191e;
@@ -159,4 +169,8 @@
   z-index: 1;
   top: 30px;
   right: 0;
+}
+
+.toast {
+  color: black;
 }
