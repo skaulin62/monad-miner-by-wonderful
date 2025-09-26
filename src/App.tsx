@@ -13,7 +13,7 @@ import {
 } from "@privy-io/react-auth";
 
 const createField = (size: number, countMines: number) => {
-  const field: number[] = new Array(100).fill(10);
+  const field: number[] = new Array(100).fill(0);
 
   const calcNear = (x: number, y: number) => {
     if (x >= 0 && x < size && y >= 0 && y < size) {
@@ -74,7 +74,7 @@ function App() {
       return;
     }
 
-    if (countMines >= 30 || countMines < 5)
+    if (countMines >= 30 || countMines < 10)
       return toast.error("Mines range: 10 - 30");
 
     if (isStart) return;
