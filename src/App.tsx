@@ -56,7 +56,9 @@ function App() {
 
     if (countChecked == size ** 2 - countMines) {
       setScore(countMines * 10);
-      toast.success("You won!!!!!!!!!!!!!!!!!!! your score: " + score);
+      toast.success(
+        "You won!!!!!!!!!!!!!!!!!!! your score: " + score && countMines * 10
+      );
       return true;
     }
     return false;
@@ -117,9 +119,10 @@ function App() {
     clear(x, y);
 
     while (clearing.length) {
-      const temp: { x: number; y: number } = clearing.pop();
-      const x = temp.x;
-      const y = temp.y;
+      const temp: { x: number; y: number } | undefined = clearing.pop();
+      if (!temp) return;
+      const x: number = temp.x;
+      const y: number = temp.y;
       mask[x * size + y] = 1;
       if (field[x * size + y] !== 0) continue;
 
